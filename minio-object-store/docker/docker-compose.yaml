@@ -1,0 +1,31 @@
+services:
+  minio-object-store:
+    image: quay.io/minio/minio:latest
+    container_name: minio-object-store
+    hostname: minio-object-store
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      MINIO_SERVER_URL: ${MINIO_SERVER_URL:-http://minio-object-store:9002}
+      MINIO_BROWSER_REDIRECT_URL: ${MINIO_BROWSER_REDIRECT_URL:-http://minio-object-store:9001}
+    command: server /data --console-address ":9001" --address ":9002"
+    ports:
+      - "9002:9002"  # API S3
+      - "9001:9001"  # Console Web
+    volumes:
+      - minio_data:/data
+    networks:
+      - nginx_proxy
+
+volumes:
+  minio_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: #/pasta/minio-object-store/data
+
+networks:
+  nginx_proxy:
+    external: true
