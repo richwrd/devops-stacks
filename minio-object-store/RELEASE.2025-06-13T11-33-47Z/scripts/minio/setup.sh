@@ -22,7 +22,6 @@ run_minio_setup() {
         $(create_buckets)
         $(configure_cors)
         $(set_api_limits)
-        $(set_session_timeout)
         $(restart_minio_service)
         $(print_setup_summary)
     "

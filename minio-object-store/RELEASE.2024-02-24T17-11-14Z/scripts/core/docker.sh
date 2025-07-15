@@ -36,7 +36,7 @@ start_service() {
     sleep 5
     if is_running; then
         log "MinIO iniciado com sucesso!"
-        info "Console Web: https://$MINIOP_WEB_DOMAIN"
+        info "Console Web: https://$MINIO_WEB_DOMAIN"
         info "API S3: https://$MINIO_API_DOMAIN"
     else
         error "Falha ao iniciar MinIO"
