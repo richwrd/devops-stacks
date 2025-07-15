@@ -10,3 +10,5 @@ img-src 'self' data: https:;
 font-src 'self' https://use.typekit.net;
 connect-src 'self' https:; 
 frame-src 'self' https:;" always;
+
+

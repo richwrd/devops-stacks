@@ -1,6 +1,3 @@
-Claro! Aqui está uma descrição elaborada para o `README.md`, pronta para você copiar e colar. O foco é em organização, clareza e profissionalismo, com emojis para tornar a leitura mais agradável:
-
-````md
 # 🐳 Docker Compose & Automation Scripts
 
 Este repositório contém uma coleção organizada de stacks Docker Compose e scripts automatizados desenvolvidos para facilitar a criação, o provisionamento e o gerenciamento de ambientes containerizados.
@@ -66,4 +63,3 @@ Sinta-se à vontade para abrir uma issue ou enviar um pull request com melhorias
 
 **Eduardo Richard**
 [🔗 eduardorichard.com](https://eduardorichard.com)
-

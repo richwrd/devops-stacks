@@ -1,0 +1,45 @@
+services:
+  minio-object-store:
+    image: minio/minio:latest
+    hostname: minio-object-store
+    container_name: minio-object-store
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      MINIO_SERVER_URL: ${MINIO_SERVER_URL:-http://minio-object-store:9002}
+      MINIO_BROWSER_REDIRECT_URL: ${MINIO_BROWSER_REDIRECT_URL:-http://minio-object-store:9001}
+      MINIO_REGION: ${MINIO_REGION:-sa-east-1}
+      # Configurações para melhorar websockets
+      MINIO_API_REQUESTS_MAX: ${MINIO_API_REQUESTS_MAX:-2000}
+      MINIO_API_CORS_ALLOW_ORIGIN: ${MINIO_API_CORS_ALLOW_ORIGIN:-*}
+    entrypoint: ["/scripts/entrypoint.sh"]
+    ports:
+      - "9001:9001"  # Console Web
+      - "9002:9002"  # API S3
+    volumes:
+      - minio-object-store:/data
+      - ./scripts:/scripts:ro
+    mem_limit: 4g
+    cpus: 1.5
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9002/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - nginx_proxy
+
+volumes:
+  minio-object-store:
+    name: minio-object-store
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /minio-object-store/data
+
+networks:
+  nginx_proxy:
+    external: true
