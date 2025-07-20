@@ -13,8 +13,13 @@ services:
     volumes:
       - npm_data:/data
       - npm_letsencrypt:/etc/letsencrypt
+      - geoip_data:/usr/share/GeoIP:ro
     networks:
       - nginx_proxy
+    healthcheck:
+      test: ["CMD", "/usr/bin/check-health"]
+      interval: 10s
+      timeout: 3s
 
 volumes:
   npm_data:
@@ -30,6 +35,13 @@ volumes:
       type: none
       o: bind
       device: #/pasta/nginx-proxy-manager/letsencrypt
+
+  geoip_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: #/pasta/nginx-proxy-manager/geoip
 
 networks:
   nginx_proxy:
