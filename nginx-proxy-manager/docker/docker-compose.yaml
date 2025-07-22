@@ -11,9 +11,9 @@ services:
     environment:
       DB_SQLITE_FILE: "/data/database.sqlite"
     volumes:
-      - npm_data:/data
-      - npm_letsencrypt:/etc/letsencrypt
-      - geoip_data:/usr/share/GeoIP:ro
+      - nginx_data:/data
+      - nginx_letsencrypt:/etc/letsencrypt
+      - nginx_geoip:/usr/share/GeoIP:ro
     networks:
       - nginx_proxy
     healthcheck:
@@ -22,21 +22,24 @@ services:
       timeout: 3s
 
 volumes:
-  npm_data:
+  nginx_data:
+    name: nginx_data
     driver: local
     driver_opts:
       type: none
       o: bind
       device: #/pasta/nginx-proxy-manager/data
 
-  npm_letsencrypt:
+  nginx_letsencrypt:
+    name: nginx_letsencrypt
     driver: local
     driver_opts:
       type: none
       o: bind
       device: #/pasta/nginx-proxy-manager/letsencrypt
 
-  geoip_data:
+  nginx_geoip:
+    name: nginx_geoip
     driver: local
     driver_opts:
       type: none

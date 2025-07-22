@@ -13,6 +13,7 @@ services:
       MINIO_API_REQUESTS_MAX: ${MINIO_API_REQUESTS_MAX:-2000}
       MINIO_API_CORS_ALLOW_ORIGIN: ${MINIO_API_CORS_ALLOW_ORIGIN:-*}
       MINIO_AGPL_LICENSE_ACCEPTED: ${MINIO_AGPL_LICENSE_ACCEPTED:-1}
+      MINIO_PROMETHEUS_AUTH_TYPE: "public"
     entrypoint: ["/scripts/entrypoint.sh"]
     ports:
       - "9001:9001"  # Console Web
@@ -24,6 +25,14 @@ services:
     cpus: 1.5
     networks:
       - nginx_proxy
+      - grafana_network
+    healthcheck:
+      test: ["CMD", "sh", "/scripts/minio/healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
 
 volumes:
   minio-object-store:
@@ -36,4 +45,6 @@ volumes:
 
 networks:
   nginx_proxy:
+    external: true
+  grafana_network:
     external: true

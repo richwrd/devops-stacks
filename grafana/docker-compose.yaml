@@ -1,0 +1,34 @@
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    hostname: grafana
+    restart: unless-stopped
+    volumes:
+      - grafana-data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3020:3000"
+    networks:
+      - nginx_proxy
+      - grafana_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+    grafana-data:
+      name: grafana-data
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: /mnt/sdb1/stacks/grafana/data
+
+networks:
+  nginx_proxy:
+    external: true
