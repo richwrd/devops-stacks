@@ -70,7 +70,7 @@ sudo docker compose ps
 
 Por padrão, a configuração inicial pode deixar o usuário `root` acessível de qualquer lugar, o que é uma grande falha de segurança. Para garantir a proteção do seu banco de dados, é **essencial** restringir o acesso do `root` a um IP confiável.
 
-➡️ **Consulte o guia detalhado que criamos para isso: [ACESSO\_ROOT.md](https://github.com/richwrd/devops-stacks/tree/main/mariadb/ACESSO_ROOT.md)**
+➡️ **Consulte o guia detalhado que criamos para isso: [ACESSO\_ROOT.md](https://github.com/richwrd/devops-stacks/blob/main/mariadb/ACESSO_ROOT.MD)**
 
 ## 🎛️ Gerenciamento do serviço
 
