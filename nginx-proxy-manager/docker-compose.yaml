@@ -1,21 +1,30 @@
 services:
   app:
     image: 'jc21/nginx-proxy-manager:latest'
-    container_name: nginx-proxy-manager
-    hostname: nginx-proxy-manager
+    container_name: ${NPM_CONTAINER_NAME}
+    hostname: ${NPM_HOSTNAME}
     restart: unless-stopped
     ports:
       - '80:80'    # Porta HTTP
       - '443:443'  # Porta HTTPS
       - '81:81'    # Interface de gerenciamento
     environment:
-      DB_SQLITE_FILE: "/data/database.sqlite"
+      # - DB_SQLITE_FILE="/data/database.sqlite"
+      # Postgres parameters:
+      - DB_POSTGRES_HOST=${DB_POSTGRES_HOST}
+      - DB_POSTGRES_PORT=${DB_POSTGRES_PORT}
+      - DB_POSTGRES_USER=${DB_POSTGRES_USER}
+      - DB_POSTGRES_PASSWORD=${DB_POSTGRES_PASSWORD}
+      - DB_POSTGRES_NAME=${DB_POSTGRES_NAME}
+      - DISABLE_IPV6=${DISABLE_IPV6}
     volumes:
       - nginx_data:/data
       - nginx_letsencrypt:/etc/letsencrypt
       - nginx_geoip:/usr/share/GeoIP:ro
+      - ./custom:/data/nginx/custom
     networks:
-      - nginx_proxy
+      - nginx_network
+      - postgres_network
     healthcheck:
       test: ["CMD", "/usr/bin/check-health"]
       interval: 10s
@@ -28,7 +37,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: #/pasta/nginx-proxy-manager/data
+      device: ${DATA_PATH}
 
   nginx_letsencrypt:
     name: nginx_letsencrypt
@@ -36,7 +45,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: #/pasta/nginx-proxy-manager/letsencrypt
+      device: ${LETSENCRYPT_PATH}
 
   nginx_geoip:
     name: nginx_geoip
@@ -44,8 +53,11 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: #/pasta/nginx-proxy-manager/geoip
+      device: ${GEOIP2_PATH}
 
 networks:
-  nginx_proxy:
+  nginx_network:
+    name: ${NPM_NETWORK_NAME}
+    driver: bridge
+  postgres_network: 
     external: true
