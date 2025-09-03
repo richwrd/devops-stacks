@@ -93,7 +93,7 @@ Para mais detalhes sobre configurações, otimizações e uso do MariaDB, consul
 
 <p align="center">═══════════ ◈ ═══════════</p>
 <p align="center">
-  👨‍💻 Desenvolvido por <strong>richwrd</strong> 
+  👨‍💻 Desenvolvido por <strong>richwrd</strong>
 </p>
 <p align="center">⚜️ Maringá - PR ⚜️</p>
 <p align="center">═══════════ ◈ ═══════════</p>

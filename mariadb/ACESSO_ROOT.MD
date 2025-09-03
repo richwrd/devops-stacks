@@ -63,7 +63,7 @@ RENAME USER 'root'@'%' TO 'root'@'10.10.10.2';
   * **`RENAME USER 'root'@'%'`**: Identifica o usuário que queremos alterar (o `root` que pode se conectar de qualquer lugar).
   * **`TO 'root'@'10.10.10.2'`**: Define a nova configuração, permitindo acesso apenas do seu IP.
 
-> ✨ **Dica:** Se você quisesse liberar para *qualquer dispositivo* na sua rede VPN (como você mostrou no seu exemplo), você usaria `... TO 'root'@'10.10.10.%';`. A versão com o IP específico é mais segura\!
+> ✨ **Dica:** Se você quisesse liberar para *qualquer dispositivo* na sua rede VPN, você usaria `... TO 'root'@'10.10.10.%';`. A versão com o IP específico é mais segura\!
 
 #### 4\. ✅ Confirme a Mudança
 
