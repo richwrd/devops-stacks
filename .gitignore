@@ -1,1 +1,3 @@
 .env
+./wireguard/client/.env
+./wireguard/server/.env
