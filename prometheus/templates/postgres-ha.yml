@@ -1,0 +1,57 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  # --- etcd Cluster ---
+  - job_name: "etcd-cluster"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets:
+          - "etcd-1:2379"
+          - "etcd-2:2379"
+          - "etcd-3:2379"
+        labels:
+          environment: "production"
+          cluster: "pg-ha-cluster"
+
+  # --- Patroni (SEM labels extras) ---
+  - job_name: "patroni"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets:
+          - "patroni-postgres-1:8008"
+          - "patroni-postgres-2:8008"
+          - "patroni-postgres-3:8008"
+
+    # Adiciona apenas labels globais, DEPOIS da coleta
+    metric_relabel_configs:
+      # Copia 'name' do Patroni para 'service_name' (exigido pelo Percona)
+      - source_labels: [name]
+        target_label: service_name
+        action: replace
+      
+      # Adiciona labels globais
+      - target_label: environment
+        replacement: "production"
+        action: replace
+      
+      - target_label: cluster
+        replacement: "pg-ha-cluster"
+        action: replace
+
+  # --- PostgreSQL Exporter ---
+  - job_name: "postgres_exporter"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets:
+          - "patroni-postgres-1-exporter:9187"
+          - "patroni-postgres-2-exporter:9187"
+          - "patroni-postgres-3-exporter:9187"
+
+  # --- Pgpool-II ---
+  - job_name: "pgpool-exporter"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets:
+          - "pgpool2_exporter:9719"
