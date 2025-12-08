@@ -1,0 +1,49 @@
+services:
+  minecraft:
+    image: itzg/minecraft-server
+    container_name: mc-server
+    restart: unless-stopped
+    ports:
+      - "25565:25565"
+    environment:
+      # É OBRIGATÓRIO aceitar o EULA para o servidor iniciar
+      - EULA=TRUE
+      
+      # Versão do Minecraft (use "LATEST" para a última ou ex: "1.20.4")
+      - VERSION=LATEST
+      
+      # Tipo de servidor (PAPER é recomendado por ser mais leve que o VANILLA)
+      # Opções: VANILLA, PAPER, FORGE, FABRIC, SPIGOT
+      - TYPE=PAPER
+
+      # Define como FALSE para permitir jogadores "offline" (pirata)
+      # O AuthMe protegerá as contas para ninguém roubar o nick de ninguém
+      - ONLINE_MODE=FALSE
+      
+      # 6269 = AuthMe (Login)
+      # 2124 = SkinsRestorer (Volta as skins)
+      # - SPIGET_RESOURCES=2124
+
+      # LINK DIRETO para o AuthMe (versão 5.6.0 Beta 2, compatível com versões novas)
+      - PLUGINS=https://github.com/AuthMe/AuthMeReloaded/releases/download/5.6.0-beta2/AuthMe-5.6.0-beta2.jar,https://github.com/SkinsRestorer/SkinsRestorer/releases/download/15.0.3/SkinsRestorer.jar
+
+      # Quantidade de memória RAM dedicada ao Java (ajuste conforme seu PC)
+      - MEMORY=12G
+      
+      # Nome do servidor na lista
+      - MOTD=Servidor Docker Minecraft
+      
+      # Dificuldade (peaceful, easy, normal, hard)
+      - DIFFICULTY=normal
+
+      # --- DEFINA A SEED AQUI ---
+      - SEED=2419912010728942704
+      
+    volumes:
+      # Mapeia a pasta 'data' do seu PC para dentro do container
+      # É aqui que o mundo e as configs ficarão salvos
+      - ./data:/data
+      
+    # Configurações para permitir interagir com o console se necessário
+    tty: true
+    stdin_open: true
